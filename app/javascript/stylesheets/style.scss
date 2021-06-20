@@ -1,0 +1,43 @@
+.bg-conversation {
+  @extend .bg-success;
+  text-align: left !important;
+  border-top: 1px solid #01753f;
+  a {
+    color: #fff;
+    text-decoration: none;
+    line-height: 30px;
+    &:hover {
+      color: #fff;
+      background-color: #01753f;
+      text-decoration: none;
+    }
+  }
+  .active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #01753f;
+  }
+}
+.min-vh-90{ min-height: 90vh !important }
+.h-80 { height: 80vh !important; }
+.h-20 { height: 20vh !important; }
+.chat-item {
+  @extend .bg-gradient;
+  border-radius: 4px;
+  padding: 8px;
+  line-height: 24px;
+  font-size: 15px;
+  max-width: 70%;
+  display: inline-block;
+  text-align: left;
+}
+.item-sent {
+  @extend .chat-item;
+  background-color: #dcf1c6;
+  border: 1px solid #9ED366;
+}
+.item-received {
+  @extend .chat-item;
+  background-color: #cfffff;
+  border: 1px solid #66d8fc;
+}
