@@ -12,9 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2021_06_20_082213) do
 
-  create_table "conversations", force: :cascade do |t|
-    t.integer "chat_id"
-    t.string "chat_type"
+  create_table "chats", force: :cascade do |t|
+    t.integer "telegram_chat_id"
+    t.string "telegram_chat_type"
     t.string "title"
     t.string "username"
     t.string "first_name"

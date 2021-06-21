@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :conversation do
-    chat_id { 123 }
-    chat_type { "Private" }
+  factory :chat do
+    telegram_chat_id { 123 }
+    telegram_chat_type { "Private" }
     title { "Test Chat" }
     username { "test_user" }
     first_name { "Test" }
