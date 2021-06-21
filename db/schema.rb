@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_20_082213) do
+ActiveRecord::Schema.define(version: 2021_06_21_170809) do
 
   create_table "chats", force: :cascade do |t|
     t.integer "telegram_chat_id"
-    t.string "telegram_chat_type"
+    t.string "chat_type"
     t.string "title"
     t.string "username"
     t.string "first_name"
@@ -23,4 +23,14 @@ ActiveRecord::Schema.define(version: 2021_06_20_082213) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.integer "chat_id", null: false
+    t.text "text_message"
+    t.datetime "post_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+  end
+
+  add_foreign_key "messages", "chats"
 end
