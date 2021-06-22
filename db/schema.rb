@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2021_06_21_170809) do
 
   create_table "messages", force: :cascade do |t|
     t.integer "chat_id", null: false
+    t.integer "telegram_message_id"
     t.text "text_message"
     t.datetime "post_at"
     t.datetime "created_at", precision: 6, null: false
