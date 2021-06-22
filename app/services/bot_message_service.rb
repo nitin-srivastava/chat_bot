@@ -11,7 +11,8 @@ class BotMessageService
   def receive(message_hash)
     chat = find_or_create_chat(message_hash['chat'])
     message = chat.messages.new(telegram_message_id: message_hash['message_id'],
-                                text_message: message_hash['text'], message_at: Time.at(message_hash['date']))
+                                text_message: message_hash['text'],
+                                message_at: Time.at("#{message_hash['date']}".to_i))
     save_record(message)
   rescue StandardError => e
     errors.push(e.message)
