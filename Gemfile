@@ -19,6 +19,7 @@ gem 'jbuilder', '~> 2.7'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'rexml', '~> 3.2', '>= 3.2.5'
+gem 'telegram-bot-ruby', '>= 0.16.0'
 
 group :development, :test do
   gem 'rspec-rails', '>= 5.0.1'
