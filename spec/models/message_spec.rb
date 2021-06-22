@@ -18,4 +18,17 @@ RSpec.describe Message, type: :model do
     end
   end
 
+  describe "#sent?" do
+    let(:message) { build(:message) }
+
+    it { expect(message.sent?).to be_truthy }
+    it { expect(message.received?).to be_falsey }
+  end
+
+  describe "#received?" do
+    let(:message) { build(:message, message_type: 'received') }
+
+    it { expect(message.sent?).to be_falsey }
+    it { expect(message.received?).to be_truthy }
+  end
 end
