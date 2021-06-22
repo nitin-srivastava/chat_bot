@@ -31,6 +31,8 @@ RSpec.describe BotMessageService do
         expect(Message.count).to eq(1)
         expect(Message.last.text_message).to eq(message_hash['text'])
         expect(Message.last.chat_id).to eq(chat.id)
+        expect(Message.last.message_type).to eq('received')
+        expect(Message.last.published).to be_truthy
         expect(bot_message_service.errors).to be_empty
       end
     end
@@ -54,6 +56,8 @@ RSpec.describe BotMessageService do
         expect(Message.count).to eq(1)
         expect(Message.last.text_message).to eq(message_hash['text'])
         expect(Message.last.chat_id).to eq(chat.id)
+        expect(Message.last.message_type).to eq('received')
+        expect(Message.last.published).to be_truthy
         expect(bot_message_service.errors).to be_empty
       end
     end
@@ -98,6 +102,8 @@ RSpec.describe BotMessageService do
         expect(bot_message_service.errors).to be_empty
         expect(message.telegram_message_id).to eq(response['result']['message_id'])
         expect(message.message_at).to eq(Time.at(response['result']['date']))
+        expect(Message.last.message_type).to eq('sent')
+        expect(message.published).to be_truthy
       end
     end
 
@@ -117,6 +123,7 @@ RSpec.describe BotMessageService do
         expect(bot_message_service.errors).to eq(["Sorry! something went wrong!"])
         expect(message.telegram_message_id).to be_nil
         expect(message.message_at).to be_nil
+        expect(message.published).to be_falsey
       end
     end
   end
