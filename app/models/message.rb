@@ -14,4 +14,10 @@ class Message < ApplicationRecord
       message_type == name
     end
   end
+
+  def save_and_publish
+    self.message_type = 'sent'
+    self.save
+    BotMessageService.new.send_message(self)
+  end
 end
