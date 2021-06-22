@@ -2,7 +2,7 @@ require 'rails_helper'
 RSpec.describe BotMessageService do
   let(:bot_message_service) { BotMessageService.new }
   let(:from_param_hash) do
-    {"id"=>1282, "is_bot"=>false, "first_name"=>"Nitin", "last_name"=>"Srivastava", "language_code"=>"en"}
+    {"id"=>1282, "is_bot"=>false, "first_name"=>"Test", "last_name"=>"User", "language_code"=>"en"}
   end
   let(:chat_param_hash) do
     {"id" => 1282, "first_name" => "Test", "last_name" => "User", "type" => "private"}
@@ -69,6 +69,54 @@ RSpec.describe BotMessageService do
         expect(Message.count).to eq(0)
         expect(bot_message_service.errors).not_to be_empty
         expect(bot_message_service.errors).to eq(["Telegram chat can't be blank"])
+      end
+    end
+  end
+
+  describe '#send_message' do
+    let(:message) { build(:message, telegram_message_id: nil) }
+    let(:bot_api_mock) { instance_double('Telegram::Bot::Api mock') }
+
+    context 'when success' do
+      let(:response) do
+        {"ok"=>true,
+         "result"=>
+             {"message_id"=>15,
+              "from"=>{"id"=> 1844, "is_bot"=>true, "first_name"=>"Nitin Chat Bot", "username"=>"nitin_tg_chat_bot"},
+              "chat"=>{"id"=> 1282, "first_name"=>"Test", "last_name"=>"User", "type"=>"private"},
+              "date"=> 1624344640,
+              "text"=>"Hello! Message from Service class"}}
+      end
+      before do
+        expect(message.save).to be_truthy
+        allow(Telegram::Bot::Api).to receive(:new).and_return(bot_api_mock)
+        allow(bot_api_mock).to receive(:send_message).with(chat_id: message.telegram_chat_id, text: message.text_message).and_return(response)
+        expect(bot_message_service.send_message(message)).to be_truthy
+      end
+
+      it 'updates the message_id field of message' do
+        expect(bot_message_service.errors).to be_empty
+        expect(message.telegram_message_id).to eq(response['result']['message_id'])
+        expect(message.message_at).to eq(Time.at(response['result']['date']))
+      end
+    end
+
+    context 'when failed' do
+      let(:response) do
+        {"ok"=>false, "description"=> "Sorry! something went wrong!"}
+      end
+      before do
+        expect(message.save).to be_truthy
+        allow(Telegram::Bot::Api).to receive(:new).and_return(bot_api_mock)
+        allow(bot_api_mock).to receive(:send_message).with(chat_id: message.telegram_chat_id, text: message.text_message).and_return(response)
+        expect(bot_message_service.send_message(message)).to be_falsey
+      end
+
+      it 'returns the errors and not update the message_id field of message' do
+        expect(bot_message_service.errors).not_to be_empty
+        expect(bot_message_service.errors).to eq(["Sorry! something went wrong!"])
+        expect(message.telegram_message_id).to be_nil
+        expect(message.message_at).to be_nil
       end
     end
   end

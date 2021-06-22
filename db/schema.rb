@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_06_21_170809) do
     t.integer "chat_id", null: false
     t.integer "telegram_message_id"
     t.text "text_message"
-    t.datetime "post_at"
+    t.datetime "message_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
