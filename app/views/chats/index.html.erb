@@ -6,45 +6,7 @@
 </div>
 <div class="row min-vh-90">
   <div class="col-lg-3 px-0">
-    <ul class="nav flex-column nav-fill">
-      <li class="nav-item bg-conversation">
-        <a class="nav-link active" aria-current="page" href="#">Active</a>
-      </li>
-      <li class="nav-item bg-conversation">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item bg-conversation">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item bg-conversation">
-        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li>
-    </ul>
+    <%= render 'chats/side_nav_bar' %>
   </div>
-  <div class="col-lg-9 py-2 px-0" style="border: 1px solid green;">
-    <div class="h-80 overflow-auto p-2" style="border-bottom: 1px solid green;">
-      <div class="col-lg-12">
-        <p><span class="item-received">Start aligned text on all viewport sizes.</span></p>
-        <p class="text-end"><span class="item-sent">End aligned text on all viewport sizes.</span></p>
-        <p><span class="item-received">Easily realign text to components with text alignment classes. For start, end, and center alignment, responsive classes are available that use the same viewport width breakpoints as the grid system.</span></p>
-        <p class="text-end"><span class="item-sent">End aligned text on all viewport sizes.</span></p>
-        <p><span class="item-received">Start aligned text on all viewport sizes.</span></p>
-        <p class="text-end"><span class="item-sent">Note that we don’t provide utility classes for justified text. While, aesthetically, justified text might look more appealing, it does make word-spacing more random and therefore harder to read.</span></p>
-        <p><span class="item-received">Start aligned text on all viewport sizes.</span></p>
-        <p class="text-end"><span class="item-sent">End aligned text on all viewport sizes.</span></p>
-        <p><span class="item-received">Easily realign text to components with text alignment classes. For start, end, and center alignment, responsive classes are available that use the same viewport width breakpoints as the grid system.</span></p>
-        <p class="text-end"><span class="item-sent">End aligned text on all viewport sizes.</span></p>
-        <p><span class="item-received">Start aligned text on all viewport sizes.</span></p>
-        <p class="text-end"><span class="item-sent">Note that we don’t provide utility classes for justified text. While, aesthetically, justified text might look more appealing, it does make word-spacing more random and therefore harder to read.</span></p>
-      </div>
-    </div>
-    <form class="row h-20 p-2">
-      <div class="col-lg-10">
-        <input type="text" class="form-control form-control-lg" placeholder="Type your message here...">
-      </div>
-      <div class="col-lg-2 py-1">
-        <button type="submit" class="btn btn-success">Send</button>
-      </div>
-    </form>
-  </div>
+  <div class="col-lg-9 py-2 px-0" style="border: 1px solid green;" id="message-window"></div>
 </div>

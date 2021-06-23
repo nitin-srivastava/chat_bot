@@ -12,5 +12,9 @@ environment.plugins.prepend(
             Popper: ['popper.js', 'default'],
     })
 )
+const config = environment.toWebpackConfig();
+config.resolve.alias = {
+    jquery: 'jquery/src/jquery'
+};
 
 module.exports = environment

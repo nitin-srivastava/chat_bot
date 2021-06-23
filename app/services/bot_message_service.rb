@@ -12,7 +12,8 @@ class BotMessageService
     chat = find_or_create_chat(message_hash['chat'])
     message = chat.messages.new(telegram_message_id: message_hash['message_id'],
                                 text_message: message_hash['text'],
-                                message_at: Time.at("#{message_hash['date']}".to_i))
+                                message_at: Time.at("#{message_hash['date']}".to_i),
+                                message_type: 'received', published: true)
     save_record(message)
   rescue StandardError => e
     errors.push(e.message)
@@ -44,7 +45,8 @@ class BotMessageService
   def parse_response(response, message)
     if response['ok']
       result = response['result']
-      message.update_columns(telegram_message_id: result['message_id'], message_at: Time.at(result['date']))
+      message.update_columns(telegram_message_id: result['message_id'],
+                             message_at: Time.at(result['date']), published: true)
     else
       errors.push(response['description'])
     end

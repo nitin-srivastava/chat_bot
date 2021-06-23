@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_21_170809) do
+ActiveRecord::Schema.define(version: 2021_06_22_102534) do
 
   create_table "chats", force: :cascade do |t|
     t.integer "telegram_chat_id"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 2021_06_21_170809) do
     t.datetime "message_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "message_type"
+    t.boolean "published", default: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 

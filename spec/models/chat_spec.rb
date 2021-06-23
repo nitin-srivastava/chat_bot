@@ -18,4 +18,11 @@ RSpec.describe Chat, type: :model do
     expect(chat.first_name).to eq('Test')
     expect(chat.last_name).to eq('User')
   end
+
+  describe '#full_name' do
+    let(:chat_two) { build(:chat, first_name: 'Tarek', last_name: ' ' ) }
+
+    it { expect(chat.full_name).to eq('Test User') }
+    it { expect(chat_two.full_name).to eq('Tarek') }
+  end
 end
