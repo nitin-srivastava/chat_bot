@@ -1,1 +1,4 @@
-$("#message-window").html("<%=j (render partial: 'messages/index', locals: { messages: @messages }) %>")
+$('.bg-conversation a').removeClass('active')
+$("#chat-channel-<%= @chat.id %> a").addClass('active')
+$("#active-chat-title").html("<%= @chat.full_name %>")
+$("#active-chat-window").html("<%=j (render partial: 'messages/index', locals: { messages: @messages }) %>")

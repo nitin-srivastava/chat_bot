@@ -1,5 +1,6 @@
 class Message < ApplicationRecord
   belongs_to :chat
+  include ApplicationHelper
 
   MESSAGE_TYPES = %w[received sent].freeze
   validates :chat, :text_message, :message_type, presence: true
@@ -18,6 +19,18 @@ class Message < ApplicationRecord
   def save_and_publish
     self.message_type = 'sent'
     self.save
-    BotMessageService.new.send_message(self)
+    if BotMessageService.new.send_message(self)
+      dispatch
+      true
+    end
+  end
+
+  def dispatch
+    data = message_channel_data(self)
+    ActionCable.server.broadcast("message_channel", data)
+  end
+
+  def bot_command?
+    ["/start", "/stop"].include?(text_message)
   end
 end

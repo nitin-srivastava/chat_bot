@@ -14,7 +14,11 @@ class BotMessageService
                                 text_message: message_hash['text'],
                                 message_at: Time.at("#{message_hash['date']}".to_i),
                                 message_type: 'received', published: true)
-    save_record(message)
+    if save_record(message)
+      message.dispatch
+      send_comand_answer(chat, message) if message.bot_command?
+      true
+    end
   rescue StandardError => e
     errors.push(e.message)
     false
@@ -33,8 +37,10 @@ class BotMessageService
     chat.assign_attributes(first_name: param_hash['first_name'],
                            last_name: param_hash['last_name'],
                            chat_type: param_hash['type'])
-    save_record(chat)
-    chat
+    if save_record(chat)
+      chat.dispatch
+      chat
+    end
   end
 
   def save_record(record)
@@ -51,5 +57,19 @@ class BotMessageService
       errors.push(response['description'])
     end
     response['ok']
+  end
+
+  def send_comand_answer(chat, c_message)
+    _message = chat.messages.new(text_message: command_text(c_message))
+    _message.save_and_publish
+  end
+
+  def command_text(c_message)
+    case c_message.text_message
+    when '/start'
+      "Hello #{c_message.chat.full_name}! Welcome to the Nitin Chat Bot."
+    when '/stop'
+      "Bye #{c_message.chat.full_name}! Have a great day."
+    end
   end
 end

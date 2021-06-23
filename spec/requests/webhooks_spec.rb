@@ -9,6 +9,8 @@ RSpec.describe "Webhooks", type: :request do
     end
 
     before do
+      allow_any_instance_of(Chat).to receive(:dispatch).and_return(true)
+      allow_any_instance_of(Message).to receive(:dispatch).and_return(true)
       post webhooks_callback_url, params: { message: message_params }
     end
 

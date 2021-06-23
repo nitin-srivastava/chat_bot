@@ -46,4 +46,28 @@ RSpec.describe Message, type: :model do
       expect(message.save_and_publish).to be_truthy
     end
   end
+
+  describe '#dispatch' do
+    let(:message) { build(:message) }
+    let(:action_cable_mock) { instance_double("ActionCable class") }
+    before do
+      allow(ActionCable).to receive(:server).and_return(action_cable_mock)
+      allow(action_cable_mock).to receive(:broadcast).and_return(nil)
+      expect(message.save).to be_truthy
+    end
+
+    it { expect(message.dispatch).to be_nil }
+  end
+
+  describe '#bot_command?' do
+    let(:message) { build(:message) }
+    let(:start_message) { build(:message, text_message: "/start") }
+    let(:stop_message) { build(:message, text_message: "/stop") }
+
+    it 'returns the boolean true/false value' do
+      expect(message.bot_command?).to be_falsey
+      expect(start_message.bot_command?).to be_truthy
+      expect(stop_message.bot_command?).to be_truthy
+    end
+  end
 end
