@@ -26,6 +26,11 @@ class Message < ApplicationRecord
   end
 
   def dispatch
-    ActionCable.server.broadcast("message_channel", message_channel_data(self))
+    data = message_channel_data(self)
+    ActionCable.server.broadcast("message_channel", data)
+  end
+
+  def bot_command?
+    ["/start", "/stop"].include?(text_message)
   end
 end

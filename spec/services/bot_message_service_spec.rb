@@ -17,6 +17,7 @@ RSpec.describe BotMessageService do
   end
 
   describe '#receive' do
+    let(:bot_api_mock) { instance_double('Telegram::Bot::Api mock') }
     context 'when chat is not exist then' do
       before do
         allow_any_instance_of(Chat).to receive(:dispatch).and_return(true)
@@ -77,6 +78,80 @@ RSpec.describe BotMessageService do
         expect(Message.count).to eq(0)
         expect(bot_message_service.errors).not_to be_empty
         expect(bot_message_service.errors).to eq(["Telegram chat can't be blank"])
+      end
+    end
+
+    context 'when received message is a bot_command' do
+      let(:chat) do
+        build(:chat, telegram_chat_id: chat_param_hash['id'], chat_type: chat_param_hash['type'],
+              first_name: chat_param_hash['first_name'], last_name: chat_param_hash['last_name'])
+      end
+
+      let(:response) do
+        {"ok"=>true,
+         "result"=>
+             {"message_id"=>15,
+              "from"=>{"id"=> 1844, "is_bot"=>true, "first_name"=>"Nitin Chat Bot", "username"=>"nitin_tg_chat_bot"},
+              "chat"=>{"id"=> 1282, "first_name"=>"Test", "last_name"=>"User", "type"=>"private"},
+              "date"=> 1624344640,
+              "text"=>"Hello! Message from Service class"}}
+      end
+
+      before do
+        expect(chat.save).to be_truthy
+        allow(Telegram::Bot::Api).to receive(:new).and_return(bot_api_mock)
+        allow(bot_api_mock).to receive(:send_message).with(chat_id: chat.telegram_chat_id, text: text_reply).and_return(response)
+        allow_any_instance_of(Chat).to receive(:dispatch).and_return(true)
+        allow_any_instance_of(Message).to receive(:dispatch).and_return(true)
+        expect(bot_message_service.receive(message_hash.merge('text' => bot_command))).to be_truthy
+      end
+
+      context '/start' do
+        let(:bot_command) { "/start" }
+        let(:text_reply) { "Hello #{chat.full_name}! Welcome to the Nitin Chat Bot." }
+        it 'sends the reply of the command' do
+          command_message = Message.first
+          reply_message = Message.last
+          expect(chat.first_name).to eq(chat_param_hash['first_name'])
+          expect(chat.last_name).to eq(chat_param_hash['last_name'])
+          expect(chat.telegram_chat_id).to eq(chat_param_hash['id'])
+          expect(Message.count).to eq(2)
+          # Command message received
+          expect(command_message.text_message).to eq(bot_command)
+          expect(command_message.chat_id).to eq(chat.id)
+          expect(command_message.message_type).to eq('received')
+          expect(command_message.published).to be_truthy
+          # Command reply sent
+          expect(reply_message.text_message).to eq(text_reply)
+          expect(reply_message.chat_id).to eq(chat.id)
+          expect(reply_message.message_type).to eq('sent')
+          expect(reply_message.published).to be_truthy
+          expect(bot_message_service.errors).to be_empty
+        end
+      end
+
+      context '/stop' do
+        let(:bot_command) { "/stop" }
+        let(:text_reply) { "Bye #{chat.full_name}! Have a great day." }
+        it 'sends the reply of the command' do
+          command_message = Message.first
+          reply_message = Message.last
+          expect(chat.first_name).to eq(chat_param_hash['first_name'])
+          expect(chat.last_name).to eq(chat_param_hash['last_name'])
+          expect(chat.telegram_chat_id).to eq(chat_param_hash['id'])
+          expect(Message.count).to eq(2)
+          # Command message received
+          expect(command_message.text_message).to eq(bot_command)
+          expect(command_message.chat_id).to eq(chat.id)
+          expect(command_message.message_type).to eq('received')
+          expect(command_message.published).to be_truthy
+          # Command reply sent
+          expect(reply_message.text_message).to eq(text_reply)
+          expect(reply_message.chat_id).to eq(chat.id)
+          expect(reply_message.message_type).to eq('sent')
+          expect(reply_message.published).to be_truthy
+          expect(bot_message_service.errors).to be_empty
+        end
       end
     end
   end

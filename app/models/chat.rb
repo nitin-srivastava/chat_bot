@@ -10,6 +10,7 @@ class Chat < ApplicationRecord
   end
 
   def dispatch
-    ActionCable.server.broadcast('chat_channel', chat_channel_data(self))
+    data = chat_channel_data(self)
+    ActionCable.server.broadcast('chat_channel', data)
   end
 end

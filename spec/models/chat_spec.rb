@@ -25,4 +25,15 @@ RSpec.describe Chat, type: :model do
     it { expect(chat.full_name).to eq('Test User') }
     it { expect(chat_two.full_name).to eq('Tarek') }
   end
+
+  describe '#dispatch' do
+    let(:action_cable_mock) { instance_double("ActionCable class") }
+    before do
+      allow(ActionCable).to receive(:server).and_return(action_cable_mock)
+      allow(action_cable_mock).to receive(:broadcast).and_return(nil)
+      expect(chat.save).to be_truthy
+    end
+
+    it { expect(chat.dispatch).to be_nil }
+  end
 end
