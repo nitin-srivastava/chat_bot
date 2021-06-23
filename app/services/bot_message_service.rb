@@ -14,7 +14,9 @@ class BotMessageService
                                 text_message: message_hash['text'],
                                 message_at: Time.at("#{message_hash['date']}".to_i),
                                 message_type: 'received', published: true)
-    save_record(message)
+    if save_record(message)
+      message.dispatch
+    end
   rescue StandardError => e
     errors.push(e.message)
     false
@@ -33,8 +35,10 @@ class BotMessageService
     chat.assign_attributes(first_name: param_hash['first_name'],
                            last_name: param_hash['last_name'],
                            chat_type: param_hash['type'])
-    save_record(chat)
-    chat
+    if save_record(chat)
+      chat.dispatch
+      chat
+    end
   end
 
   def save_record(record)

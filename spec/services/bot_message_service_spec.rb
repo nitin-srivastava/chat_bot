@@ -19,6 +19,8 @@ RSpec.describe BotMessageService do
   describe '#receive' do
     context 'when chat is not exist then' do
       before do
+        allow_any_instance_of(Chat).to receive(:dispatch).and_return(true)
+        allow_any_instance_of(Message).to receive(:dispatch).and_return(true)
         expect(bot_message_service.receive(message_hash)).to be_truthy
       end
 
@@ -44,6 +46,8 @@ RSpec.describe BotMessageService do
       end
 
       before do
+        allow_any_instance_of(Chat).to receive(:dispatch).and_return(true)
+        allow_any_instance_of(Message).to receive(:dispatch).and_return(true)
         expect(chat.save).to be_truthy
         expect(bot_message_service.receive(message_hash)).to be_truthy
       end
