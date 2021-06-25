@@ -20,6 +20,7 @@ services:
     depends_on:
       - database
       - redis
+    env_file: .env
     environment:
       RAILS_ENV: development
 

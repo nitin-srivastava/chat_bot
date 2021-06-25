@@ -26,6 +26,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails', '>= 6.2.0'
   gem 'awesome_print', '>= 1.9.2'
+  gem 'dotenv-rails'
 end
 
 group :development do
