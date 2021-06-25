@@ -8,12 +8,14 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import scrollToTheLastItem from './custom'
 
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 
 import "../stylesheets/application";
+export { scrollToTheLastItem }
 document.addEventListener("turbolinks:load", function() {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()

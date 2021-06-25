@@ -17,4 +17,11 @@ config.resolve.alias = {
     jquery: 'jquery/src/jquery'
 };
 
+environment.config.merge({
+    output: {
+        library: ['Packs', '[scrollToTheLastItem]'],
+        libraryTarget: 'var'
+    },
+})
+
 module.exports = environment
