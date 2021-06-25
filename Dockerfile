@@ -32,5 +32,6 @@ RUN bundle config build.nokogiri --use-system-libraries
 RUN bundle check || bundle install
 COPY package.json yarn.lock /chat_app/
 RUN yarn install --check-files
+RUN bundle exec rails assets:clobber webpacker:compile
 
 ENTRYPOINT ["./entrypoints/docker-entrypoint.sh"]
