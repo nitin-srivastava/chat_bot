@@ -33,7 +33,9 @@ Using Telegram webhooks to receive the messages. Here are the steps to setup the
    ```
     $ngrok http 3000
    ```
-3. Copy the forwarding url and set it to `NGROK_HOST` in `.env` file. Like
+3. Copy the forwarding url (see screenshot) and set it to `NGROK_HOST` in `.env` file. Like
+   ![ngrok-img](https://user-images.githubusercontent.com/24418296/123465057-45dc9380-d60b-11eb-8fc9-cc9186fc7aa0.png)
+
    ```
    export NGROK_HOST=47f5876d8139.ngrok.io
    ``` 
@@ -70,7 +72,9 @@ $ bundle exec rspec
 ```
 
 ### Code coverage 
-Used `simplecov` gem for the test coverage and achieved 100% code coverage. To see the code coverage report open the `coverage/index.html` file in the browser after running the `rspec`.
+Used `simplecov` gem for the test coverage and achieved 100% code coverage. To see the code coverage report open the `coverage/index.html` file in the browser after running the `rspec`. Screenshot attached
+![test_coverage](https://user-images.githubusercontent.com/24418296/123465156-63a9f880-d60b-11eb-9c35-dd448a0cfa68.png)
+
 
 ### Demo video
 Attached is a demo video
