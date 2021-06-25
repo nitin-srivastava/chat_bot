@@ -78,6 +78,8 @@ Used `simplecov` gem for the test coverage and achieved 100% code coverage. To s
 
 ### Demo video
 Attached is a demo video
+https://user-images.githubusercontent.com/24418296/123467351-0c595780-d60e-11eb-8a83-7f1a29e86c4b.mp4
+
 
 Hope you found the given instructions helpful.
 
